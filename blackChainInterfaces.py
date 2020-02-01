@@ -19,8 +19,8 @@ mainframe = Frame(window,background='white',padx=(10),pady=(10))
 def generateArtifacts():
     print("\nArtifacts are being generated ... meditate")
     result = int(os.popen('echo $?').read())
-    r = os.popen('sh test.sh').read()
-    print(r)
+    r = os.popen('./start.sh').read()
+    # print(r)
     if(result == 0):
         button1['state'] = 'disabled'
         if button2['state'] == 'disabled':
