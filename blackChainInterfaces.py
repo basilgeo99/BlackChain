@@ -19,8 +19,7 @@ mainframe = Frame(window,background='white',padx=(10),pady=(10))
 def generateArtifacts():
     print("\nArtifacts are being generated ... meditate")
     result = int(os.popen('echo $?').read())
-    r = os.popen('./start.sh').read()
-    # print(r)
+    os.popen('./scripts/start.sh').read()
     if(result == 0):
         button1['state'] = 'disabled'
         if button2['state'] == 'disabled':
@@ -30,10 +29,11 @@ def generateArtifacts():
 def createChannel():
     print("\nChannel are being created to enhance Chi flow ... breathe")
     result = int(os.popen('echo $?').read())
-    r = os.popen('sh test.sh').read()
-    print(r)
+    os.popen('./scripts/channel.sh').read()
+
     if(result == 0):
         button2['state'] = 'disabled'
+        print("\nChannel Created Successfully")
         if button3['state'] == 'disabled':
             button3['state'] = 'normal'
 
@@ -41,8 +41,7 @@ def createChannel():
 def installInstantiate():
     print("\nInstalling and Instantiating Chaicode ... breathe harder")
     result = int(os.popen('echo $?').read())
-    r = os.popen('sh test.sh').read() 
-    print(r)
+    os.popen('./scripts/chaincode_start.sh').read() 
     if(result == 0):
         button3['state'] = 'disabled'
         print("\nYou have successfully setup the basics ... breathe out")
