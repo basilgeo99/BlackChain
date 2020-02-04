@@ -2,16 +2,16 @@ from tkinter import *
 import os
 
 window = Tk()
-window.title('BlackChain Querying')
+window.title('Query Window')
 mainframe = Frame(window)
 
 def QueryData():
     print('Querying now ... please be patient')
     user = StringVar()
     userId = StringVar()
-    user = userType.get()
+    user = userType.get().lower()
     userId = entry.get()
-    r = os.popen('').read()
+    r = os.popen('./scripts/queryAdv.sh 1 ' + user + ' ' + userId).read()
     print(r)
 
 
@@ -19,9 +19,9 @@ def RevokeConsent():
     print('Revoking Consent now ... they won\'t see what hit \'em')
     user = StringVar()
     userId = StringVar()
-    user = userType.get()
+    user = userType.get().lower()
     userId = entry.get()
-    r = os.popen('').read()
+    r = os.popen('./scripts/queryAdv.sh 2 ' + user + ' ' + userId).read()
     print(r)
 
 
@@ -29,16 +29,16 @@ def PurgeData():
     print('Purging now ... it\'s judgement day')
     user = StringVar()
     userId = StringVar()
-    user = userType.get()
+    user = userType.get().lower()
     userId = entry.get()
-    r = os.popen('').read()
+    r = os.popen('./scripts/queryAdv.sh 3 ' + user + ' ' + userId).read()
     print(r)
 
 
 def setButtonVisibility(self):
     user = StringVar()
     user = userType.get()
-    if(user == 'User'):
+    if(user == 'Users'):
         button1['state'] = 'normal'
         button2['state'] = 'normal'
         button3['state'] = 'normal'
@@ -48,10 +48,10 @@ def setButtonVisibility(self):
         button3['state'] = 'disabled'
 
 userType = StringVar()
-userOptions = {'Airport','CCD','User'}
+userOptions = {'Airport','CCD','Users'}
 userType.set('User')
 menu = OptionMenu(mainframe,userType,*userOptions,command=setButtonVisibility)
-Label(mainframe,text='Select User Type : ').grid(row=0,column=0)
+Label(mainframe,text='Organization : ').grid(row=0,column=0)
 menu.grid(row = 0,column = 1)
 
 Label(mainframe,text='User ID : ').grid(row=1,column=0)
