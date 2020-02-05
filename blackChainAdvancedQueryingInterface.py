@@ -16,11 +16,14 @@ def QueryData():
     userId = entry.get()
     r = os.popen('./scripts/queryAdv.sh 1 ' + user + ' ' + userId).read()
     print(r)
-    with open('queryResults.json') as f:
-        d = json.load(f)
-        print(d)
-        for key in d.keys():
-            text.insert(INSERT,key+"\t\t : "+d[key]+"\n")
+    try:
+        with open('./scripts/queryResults.json') as f:
+            d = json.load(f)
+            print(d)
+            for key in d.keys():
+                text.insert(INSERT,key+"\t\t : "+d[key]+"\n")
+    except:
+        text.insert(INSERT, "Error 404: Not Found!")
 
 
 
@@ -83,8 +86,8 @@ button3.grid(row=3,column=2)
 # button3['state'] = 'disabled'
 
 
-text = Text(mainframe2)
-text.pack()
+text = Text(mainframe2, height=15)
+text.grid(row=0,column=0,padx=(10,10),pady=(10,10))
 
 mainframe.grid(row=0,column=0)
 mainframe2.grid(row=1,column=0)
