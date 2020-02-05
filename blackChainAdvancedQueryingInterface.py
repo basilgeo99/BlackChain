@@ -1,5 +1,6 @@
 from tkinter import *
 import os
+import json
 
 window = Tk()
 window.title('Query Window')
@@ -13,9 +14,13 @@ def QueryData():
     userId = StringVar()
     user = userType.get().lower()
     userId = entry.get()
-    r = os.popen('./scripts/queryAdv.sh 1 ' + user + ' ' + userId).read()
-    print(r)
-    file=open('./','r')
+    # r = os.popen('./scripts/queryAdv.sh 1 ' + user + ' ' + userId).read()
+    # print(r)
+    with open('queryResults.json') as f:
+        d = json.load(f)
+        print(d)
+        for key in d.keys():
+            text.insert(INSERT,key+"\t\t : "+d[key]+"\n")
 
 
 
