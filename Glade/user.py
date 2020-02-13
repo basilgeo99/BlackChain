@@ -9,7 +9,11 @@ from gi.repository import Gtk
 
 # all functions
 def queryButton(self):
-    label.set_text('Querying Data')
+    value = str(entry.get_text())
+    if value == '':
+        label.set_text('username field is empty')
+    else:
+        label.set_text('Querying Data for '+str(value))
 
 def revokeButton(self):
     label.set_text('Revoking Consent')
@@ -35,7 +39,7 @@ button3 = builder.get_object('button3')
 button3.connect('clicked',deleteButton)
 button4 = builder.get_object('button4')
 button4.connect('clicked',applicationFormButton)
-
+entry = builder.get_object('entry')
 label = builder.get_object('label')
 
 window = builder.get_object("window1")

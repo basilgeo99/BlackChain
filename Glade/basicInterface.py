@@ -3,6 +3,7 @@ import os
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+from subprocess import Popen
 
 # all variables
 
@@ -17,7 +18,9 @@ def submitClicked(self):
     if(organization and entryvalue):
         dump.set_text(' ')
         token = os.popen('./registration.sh ' + entryvalue + ' ' + organization.lower()).read()
-        os.system("python3 test2.py " + token.strip("\n") + " " + organization.upper())
+        command = "python3 test2.py " + token.strip("\n") + " " + organization.upper())
+        Popen(command, shell=True,stdin=None, stdout=None, stderr=None, close_fds=True)
+        exit(0)
         # os.system(command)
     else:
         dump.set_text('Fields are empty.')
@@ -55,5 +58,4 @@ button.connect('clicked',submitClicked)
 window = builder.get_object("window1")
 window.connect('delete-event',Gtk.main_quit)
 window.show_all()
-
 Gtk.main()
