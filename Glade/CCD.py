@@ -14,10 +14,11 @@ def queryButton(self):
         label.set_text('username field is empty')
     else:
         label.set_text('Querying Data for '+str(value))
-        messageLabel.set_text(str(value))
-        message.run()
-        message.destroy()
-
+        dialog = Gtk.MessageDialog(window, 0, Gtk.MessageType.INFO,Gtk.ButtonsType.OK, "Queried data for "+str(value))
+        result = 'some text' # insert your querying data command here after formatting it as required
+        dialog.format_secondary_text(result)
+        dialog.run()
+        dialog.destroy()
 
 # all widgets
 builder = Gtk.Builder()
@@ -29,9 +30,6 @@ button2.connect('clicked',queryButton)
 entry = builder.get_object('entry')
 label = builder.get_object('label')
 message = builder.get_object('message')
-messageButton = builder.get_object('messageButton')
-messageLabel = builder.get_object('messageLabel')
-
 window = builder.get_object("window1")
 window.connect('delete-event',Gtk.main_quit)
 window.show_all()
