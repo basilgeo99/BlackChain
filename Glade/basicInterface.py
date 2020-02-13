@@ -10,19 +10,22 @@ from gi.repository import Gtk
 # all functions
 def submitClicked(self):
     combovalue = combo.get_model()[combo.get_active()]
+    organization = combovalue[1]
     # print(value[1])
     entryvalue = entry.get_text()
-    if(combovalue[1] and entryvalue):
+    if(organization and entryvalue):
         dump.set_text(' ')
-        spin.start()
-        # enter your code here
-        spin.stop()
+        token = os.popen('./registration.sh ' + entryvalue + ' ' + organization.lower()).read()
+        os.system("python3 test2.py " + token.strip("\n") + " " + organization.upper())
+        # os.system(command)
     else:
         dump.set_text('Fields are empty.')
         print('Fields are empty')
 
 def comboValueChange(self):
-    print('combo changed')
+    combovalue = combo.get_model()[combo.get_active()]
+    organization = combovalue[1]
+    window.set_title(organization)
 
 
 # all widgets
@@ -43,7 +46,6 @@ entry = builder.get_object('entryBox')
 label1 = builder.get_object('usernameLabel')
 label2 = builder.get_object('organizationLabel')
 dump = builder.get_object('dumpLabel')
-spin = builder.get_object('Spinker')
 button = builder.get_object('submitButton')
 
 button.connect('clicked',submitClicked)
