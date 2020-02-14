@@ -9,12 +9,21 @@ entry = dict()
 values = dict()
 
 # all functions
+def setBlanks():
+    for i in range(1,9):
+        if i == 4 :
+            continue
+        entry[i].set_text('')
+
 
 def submitClicked(self):
     emptyCheck = True
 
-    for i in range(1,10):
-        if(entry[i] == ""):
+    for i in range(1,9):
+        if i == 4 :
+            continue
+        values[i] = str(entry[i].get_text())
+        if(values[i] == ''):
             emptyCheck = True
             print("\n Entry field "+str(i)+" is empty.")
             break
@@ -40,6 +49,7 @@ def submitClicked(self):
 
         file.write(" ")
         file.close()
+        setBlanks()
     # r = os.popen('./scripts/initLedger.sh').read()
     # print(r)
 
