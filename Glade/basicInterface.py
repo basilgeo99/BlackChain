@@ -17,12 +17,11 @@ def submitClicked(self):
 
     if(organization and entryvalue):
         dump.set_text(' ')
-        windowPos = Gtk.gtk_window_get_position(window)
-        print(windowPos)
-        # token = os.popen('./registration.sh ' + entryvalue + ' ' + organization.lower()).read()
-        # command = "python3 test2.py " + token.strip("\n") + " " + organization.upper())
-        # Popen(command, shell=True,stdin=None, stdout=None, stderr=None, close_fds=True)
-        # exit(0)
+
+        token = os.popen('./registration.sh ' + entryvalue + ' ' + organization.lower()).read()
+        command = "python3 test2.py " + token.strip("\n") + " " + organization.upper()
+        Popen(command, shell=True,stdin=None, stdout=None, stderr=None, close_fds=True)
+        exit(0)
         # os.system(command)
     else:
         dump.set_text('Fields are empty.')
