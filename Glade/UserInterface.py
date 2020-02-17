@@ -69,7 +69,7 @@ class GUI:
         infoLabel.set_text('Application Form is being opened.')
 
         stack = self.builder.get_object('stack')
-        applicationForm = self.builder.get_object('applicationForm')
+        applicationForm = self.builder.get_object('ApplicationFormBox')
         stack.set_visible_child(applicationForm)
 
 
@@ -147,12 +147,12 @@ class GUI:
         entry[6] = self.builder.get_object('entry6') #creditcard
         entry[7] = self.builder.get_object('entry7') #aadhar
         entry[8] = self.builder.get_object('entry8') #email
-        optionStore=Gtk.ListStore(int,str)
-        optionOptions = ["High","Medium","Low"]
-        for ops in optionOptions:
-            optionStore.append([None,ops])
+        opts=Gtk.ListStore(int,str)
+        options = ["High","Medium","Low"]
+        for o in options:
+            opts.append([None,o])
         entry[9] = self.builder.get_object("entry9") #access level
-        entry[9].set_model(optionStore)
+        entry[9].set_model(opts)
         entry[9].set_entry_text_column(1)
 
         noticeLabel = self.builder.get_object('noticeLabel')
