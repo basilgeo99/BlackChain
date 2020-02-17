@@ -151,10 +151,10 @@ class GUI:
         optionOptions = ["High","Medium","Low"]
         for ops in optionOptions:
             optionStore.append([None,ops])
-            print(ops)
         entry[9] = self.builder.get_object("entry9") #access level
         entry[9].set_model(optionStore)
-        entry[9].set_entry_text_column(0)
+        entry[9].set_entry_text_column(1)
+
         noticeLabel = self.builder.get_object('noticeLabel')
 
         emptyCheck = True
