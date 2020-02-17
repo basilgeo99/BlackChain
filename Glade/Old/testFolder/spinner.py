@@ -3,7 +3,8 @@ import os
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-
+from subprocess import Popen
+import threading
 # all variables
 
 
@@ -16,8 +17,15 @@ def submitClicked(self):
 
     if(organization and entryvalue):
         dump.set_text(' ')
-        token = os.popen('./registration.sh ' + entryvalue + ' ' + organization.lower()).read()
-        os.system("python3 test2.py " + token.strip("\n") + " " + organization.upper())
+        self.lock = threading.allocate_lock()
+        threading.start_new_thread(self.spin,(self.lock,))
+        self.lock.acquire()
+        spinner.start()
+        # token = os.popen('./registration.sh ' + entryvalue + ' ' + organization.lower()).read()
+        # command = "python3 test2.py " + token.strip("\n") + " " + organization.upper()
+        Popen('sh test.sh', shell=True,stdin=None, stdout=None, stderr=None, close_fds=True)
+        self.lock.release()
+        spinner.stop()
         # os.system(command)
     else:
         dump.set_text('Fields are empty.')
@@ -50,10 +58,10 @@ label1 = builder.get_object('usernameLabel')
 label2 = builder.get_object('organizationLabel')
 dump = builder.get_object('dumpLabel')
 button = builder.get_object('submitButton')
+spinner = builder.get_object('Spinker')
 button.connect('clicked',submitClicked)
 
 window = builder.get_object("window1")
 window.connect('delete-event',Gtk.main_quit)
 window.show_all()
-
 Gtk.main()
