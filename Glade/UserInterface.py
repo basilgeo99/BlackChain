@@ -13,12 +13,21 @@ UI_FILE = "UserInterface.glade"
 
 
 class GUI:
-    def __init__(self):
+    entry = dict()
+    values = dict()
 
+
+    def __init__(self):
         self.builder = Gtk.Builder()
         self.builder.add_from_file(UI_FILE)
         self.builder.connect_signals(self)
-
+        opts=Gtk.ListStore(int,str)
+        options = ["High","Medium","Low"]
+        for o in options:
+            opts.append([None,o])
+        self.entry[9] = self.builder.get_object("entry9") #access level
+        self.entry[9].set_model(opts)
+        self.entry[9].set_entry_text_column(1)
         self.window = self.builder.get_object('window')
         self.window.show_all()
 
@@ -67,7 +76,6 @@ class GUI:
     def applicationFormOpenButton(self,button):
         infoLabel = self.builder.get_object('infoLabel')
         infoLabel.set_text('Application Form is being opened.')
-
         stack = self.builder.get_object('stack')
         applicationForm = self.builder.get_object('ApplicationFormBox')
         stack.set_visible_child(applicationForm)
@@ -82,7 +90,6 @@ class GUI:
     def queryButton(self,button):
         entry = self.builder.get_object('usernameEntry')
         infoLabel = self.builder.get_object('infoLabel')
-
         value = str(entry.get_text())
         if value == '':
             infoLabel.set_text('Username field is empty')
@@ -133,36 +140,22 @@ class GUI:
 
 
 
-
     def applicationFormSubmitButton(self,button):
-
-        entry = dict()
-        values = dict()
-
-        entry[1] = self.builder.get_object('entry1') #userID
-        entry[2] = self.builder.get_object('entry2') #Src
-        entry[3] = self.builder.get_object('entry3') #Name
-        entry[4] = self.builder.get_object('entry4') #Date
-        entry[5] = self.builder.get_object('entry5') #phone
-        entry[6] = self.builder.get_object('entry6') #creditcard
-        entry[7] = self.builder.get_object('entry7') #aadhar
-        entry[8] = self.builder.get_object('entry8') #email
-        opts=Gtk.ListStore(int,str)
-        options = ["High","Medium","Low"]
-        for o in options:
-            opts.append([None,o])
-        entry[9] = self.builder.get_object("entry9") #access level
-        entry[9].set_model(opts)
-        entry[9].set_entry_text_column(1)
-
+        self.entry[1] = self.builder.get_object('entry1') #userID
+        self.entry[2] = self.builder.get_object('entry2') #Src
+        self.entry[3] = self.builder.get_object('entry3') #Name
+        self.entry[4] = self.builder.get_object('entry4') #Date
+        self.entry[5] = self.builder.get_object('entry5') #phone
+        self.entry[6] = self.builder.get_object('entry6') #creditcard
+        self.entry[7] = self.builder.get_object('entry7') #aadhar
+        self.entry[8] = self.builder.get_object('entry8') #email
         noticeLabel = self.builder.get_object('noticeLabel')
-
         emptyCheck = True
         for i in range(1,9):
             if i == 4 :
                 continue
-            values[i] = str(entry[i].get_text())
-            if(values[i] == ''):
+            self.values[i] = str(self.entry[i].get_text())
+            if(self.values[i] == ''):
                 emptyCheck = True
                 notice = "\n Entry field "+str(i)+" is empty."
                 print(notice)
@@ -171,19 +164,19 @@ class GUI:
             emptyCheck = False
         if(emptyCheck == False):
             file = open("result.txt","w")
-            for i in range(1,9):
+            for i in range(1,10):
+                print(i)
                 if i == 4 :
-                    date = entry[4].get_date()
+                    date = self.entry[4].get_date()
                     val = str(date[2])+'-'+str(date[1])+'-'+str(date[0])
+                elif i == 9 :
+                    access = self.entry[9].get_model()[self.entry[9].get_active()]
+                    val = access[1]
                 else:
-                    val = entry[i].get_text()
-                values[i] = str(val)
-                print(values[i])
-                file.write(values[i]+"\n")
-            access = entry[9].get_model()[entry[9].get_active()]
-            val = access[1]
-            values[9] = str(val)
-            file.write(values[9]+"\n")
+                    val = self.entry[i].get_text()
+                self.values[i] = str(val)
+                print(self.values[i])
+                file.write(self.values[i]+"\n")
             file.write(" ")
             file.close()
             dialog = Gtk.MessageDialog(self.window, 0, Gtk.MessageType.INFO,Gtk.ButtonsType.OK, "Application Form")
@@ -193,9 +186,18 @@ class GUI:
             dialog.destroy()
             # r = os.popen('./scripts/initLedger.sh').read()
             # print(r)
+            for i in range(1,9):
+                if i == 4 :
+                    continue
+                elif i == 9 :
+                    continue
+                else :
+                    self.entry[i].set_text('')
             stack = self.builder.get_object('stack')
             notebook_box = self.builder.get_object('notebook_box')
             stack.set_visible_child(notebook_box)
+
+
 
 
 

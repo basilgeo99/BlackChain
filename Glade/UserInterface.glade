@@ -12,6 +12,11 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-go-back</property>
   </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-go-back</property>
+  </object>
   <object class="GtkWindow" id="window">
     <property name="width_request">500</property>
     <property name="height_request">500</property>
@@ -472,6 +477,7 @@ Go to Dash</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="margin_right">20</property>
+                    <property name="input_purpose">name</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -483,6 +489,7 @@ Go to Dash</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="margin_right">20</property>
+                    <property name="input_purpose">phone</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -516,6 +523,7 @@ Go to Dash</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="margin_right">20</property>
+                    <property name="input_purpose">email</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -557,6 +565,7 @@ Go to Dash</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="margin_right">20</property>
+                    <property name="vexpand">True</property>
                     <property name="has_entry">True</property>
                     <child internal-child="entry">
                       <object class="GtkEntry">
@@ -613,10 +622,5 @@ Go to Dash</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stack">stack</property>
-  </object>
-  <object class="GtkImage" id="image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-go-back</property>
   </object>
 </interface>
