@@ -3,7 +3,13 @@ import os
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+import sys
+import ast
 
+args = sys.argv
+airport_token = args[1]
+ccd_token = args[2]
+users_token = args[3]
 
 
 
@@ -74,8 +80,6 @@ class GUI:
 
 
     def applicationFormOpenButton(self,button):
-        infoLabel = self.builder.get_object('infoLabel')
-        infoLabel.set_text('Application Form is being opened.')
         stack = self.builder.get_object('stack')
         applicationForm = self.builder.get_object('ApplicationFormBox')
         stack.set_visible_child(applicationForm)
@@ -87,20 +91,78 @@ class GUI:
 
 
 
-    def queryButton(self,button):
+    def queryButtonAirport(self,button):
         entry = self.builder.get_object('usernameEntry')
         infoLabel = self.builder.get_object('infoLabel')
         value = str(entry.get_text())
         if value == '':
             infoLabel.set_text('Username field is empty')
         else:
-            infoLabel.set_text('Querying Data for '+str(value))
+            infoLabel.set_text('')
+            result = os.popen('./query.sh ' + airport_token + ' ' + 'airport' + ' ' + value).read()
+            print(result)
+            if(len(result.split(" ")) == 7):
+                js = result.split(" ")[3]
+                js = ast.literal_eval(js)
+                pretty = ' '.join(result.split(" ")[:3])
+                stri = ""
+                for key in js.keys():
+                    stri += key + ": \t" + js[key] + "\n"
+
+                result =  "\n" + stri
             dialog = Gtk.MessageDialog(self.window, 0, Gtk.MessageType.INFO,Gtk.ButtonsType.OK, "Queried data for "+str(value))
-            result = 'some text' # insert your querying data command here after formatting it as required
             dialog.format_secondary_text(result)
             dialog.run()
             dialog.destroy()
 
+
+    def queryButtonCCD(self,button):
+        entry = self.builder.get_object('usernameEntry')
+        infoLabel = self.builder.get_object('infoLabel')
+        value = str(entry.get_text())
+        if value == '':
+            infoLabel.set_text('Username field is empty')
+        else:
+            infoLabel.set_text('')
+            result = os.popen('./query.sh ' + airport_token + ' ' + 'ccd' + ' ' + value).read()
+            print(result)
+            if(len(result.split(" ")) == 7):
+                js = result.split(" ")[3]
+                js = ast.literal_eval(js)
+                pretty = ' '.join(result.split(" ")[:3])
+                stri = ""
+                for key in js.keys():
+                    stri += key + ": \t" + js[key] + "\n"
+
+                result =  "\n" + stri
+            dialog = Gtk.MessageDialog(self.window, 0, Gtk.MessageType.INFO,Gtk.ButtonsType.OK, "Queried data for "+str(value))
+            dialog.format_secondary_text(result)
+            dialog.run()
+            dialog.destroy()
+
+    def queryButtonUser(self,button):
+        entry = self.builder.get_object('usernameEntry')
+        infoLabel = self.builder.get_object('infoLabel')
+        value = str(entry.get_text())
+        if value == '':
+            infoLabel.set_text('Username field is empty')
+        else:
+            infoLabel.set_text('')
+            result = os.popen('./query.sh ' + users_token + ' ' + 'users' + ' ' + value).read()
+            print(result)
+            if(len(result.split(" ")) == 7):
+                js = result.split(" ")[3]
+                js = ast.literal_eval(js)
+                pretty = ' '.join(result.split(" ")[:3])
+                stri = ""
+                for key in js.keys():
+                    stri += key + ": \t" + js[key] + "\n"
+
+                result =  "\n" + stri
+            dialog = Gtk.MessageDialog(self.window, 0, Gtk.MessageType.INFO,Gtk.ButtonsType.OK, "Queried data for "+str(value))
+            dialog.format_secondary_text(result)
+            dialog.run()
+            dialog.destroy()
 
 
 
@@ -116,7 +178,9 @@ class GUI:
         if value == '':
             infoLabel.set_text('Username field is empty')
         else:
-            infoLabel.set_text('Revoking data access of '+str(value)+'.')
+            infoLabel.set_text('')
+            result = os.popen('./users.sh ' + users_token + ' ' + 'revokeconsent' + ' ' + value).read()
+            print(result)
 
 
 
@@ -132,8 +196,9 @@ class GUI:
         if value == '':
             infoLabel.set_text('Username field is empty')
         else:
-            infoLabel.set_text('Deleting data for '+str(value)+'. This user has been forgotten.')
-
+            infoLabel.set_text('')
+            result = os.popen('./users.sh ' + users_token + ' ' + 'delete' + ' ' + value).read()
+            print(result)
 
 
 
@@ -180,12 +245,11 @@ class GUI:
             file.write(" ")
             file.close()
             dialog = Gtk.MessageDialog(self.window, 0, Gtk.MessageType.INFO,Gtk.ButtonsType.OK, "Application Form")
-            result = 'Submitted Successfully'
+            execute = "./init_ledger.sh "  + users_token
+            result = os.popen(execute).read()
             dialog.format_secondary_text(result)
             dialog.run()
             dialog.destroy()
-            # r = os.popen('./scripts/initLedger.sh').read()
-            # print(r)
             for i in range(1,9):
                 if i == 4 :
                     continue
