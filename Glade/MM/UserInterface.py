@@ -65,7 +65,6 @@ class GUI:
         Gtk.main_quit()
 
 
-
     def home_clicked (self, button):
         stack = self.builder.get_object('stack')
         home_button = self.builder.get_object('home_button')
@@ -299,23 +298,37 @@ class GUI:
 
 
     def getHistory(self,button):
-        entry = self.builder.get_object('usernameEntry')
-        infoLabel = self.builder.get_object('infoLabel')
-        value = str(entry.get_text())
-        if value == '':
-            infoLabel.set_text('Username field is empty')
-        else:
-            infoLabel.set_text('')
-            result = os.popen('./users.sh ' + airport_token + ' ' + 'gethistory' + ' ' + value).read()
-            js = json.loads(result)
-            pprint(js)
-            dialog = Gtk.MessageDialog(parent=self.window, flags=0, message_type=Gtk.MessageType.INFO, buttons=Gtk.ButtonsType.OK, text="Result for Query")
-            dialog.format_secondary_text(pformat(js))
-            dialog.run()
-            dialog.destroy()
-
-
-
+        # entry = self.builder.get_object('usernameEntry')
+        # infoLabel = self.builder.get_object('infoLabel')
+        # value = str(entry.get_text())
+        # if value == '':
+        #     infoLabel.set_text('Username field is empty')
+        # else:
+        #     infoLabel.set_text('')
+        #     result = os.popen('./users.sh ' + airport_token + ' ' + 'gethistory' + ' ' + value).read()
+        #     js = json.loads(result)
+        #     pprint(js)
+        #     dialog = Gtk.MessageDialog(parent=self.window, flags=0, message_type=Gtk.MessageType.INFO, buttons=Gtk.ButtonsType.OK, text="Result for Query")
+        #     dialog.format_secondary_text(pformat(js))
+        #     dialog.run()
+        #     dialog.destroy()
+        stack = self.builder.get_object('stack')
+        audit_box = self.builder.get_object('auditBox')
+        stack.set_visible_child(audit_box)
+        audit_result = self.builder.get_object('audit_result')
+        output = ""
+        json_data = None
+        i = 1
+        with open('sample.json', 'r') as f:
+            data = f.read()
+            json_data = json.loads(data)
+        for key in json_data :
+            output+=str("\n\n"+str(i)+")\tTxn ID : \n\t\t"+str(key['TxId']))
+            output+=("\n\tVALUES: " )
+            i+=1
+            for k in key['Value']:
+                output+=str("\n\t\t"+str(k)+" : "+str(key['Value'][k]))
+        audit_result.set_text(output)
 
 
 app = GUI()
